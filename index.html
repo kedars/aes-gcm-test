@@ -12,7 +12,7 @@
         var iv = hexStringToUint8Array(document.getElementById("gcm_iv").value);
         crypto.subtle.importKey("raw", keyData, "aes-gcm", false, ["encrypt"]).then(function(key) {
             var plainText = document.getElementById("plainTextGCM").value;
-            return crypto.subtle.encrypt({name: "aes-gcm", iv: iv}, key, asciiToUint8Array(plainText));
+            return crypto.subtle.encrypt({name: "aes-gcm", iv: iv}, key, hexStringToUint8Array(plainText));
         }, failAndLog).then(function(cipherText) {
             document.getElementById("cipherTextGCM").value = bytesToHexString(cipherText);
         }, failAndLog);
@@ -25,7 +25,7 @@
             var cipherText = document.getElementById("cipherTextGCM").value;
             return crypto.subtle.decrypt({name: "aes-gcm", iv: iv}, key, hexStringToUint8Array(cipherText));
         }, failAndLog).then(function(plainText) {
-            document.getElementById("resultGCM").innerHTML = "Result: " + bytesToASCIIString(plainText);
+            document.getElementById("resultGCM").innerHTML = "Result: " + bytesToHexString(plainText);
         }, function(result) {
             document.getElementById("resultGCM").innerHTML = "Result: " + result;
         });
